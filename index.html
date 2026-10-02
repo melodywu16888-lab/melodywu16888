@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人作品集 Portfolio</title>
+    <style>
+        /* 讓網域內所有錨點跳轉皆呈現流暢滑動效果 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 基本樣式與配色優化 */
+        body {
+            font-family: "PingFang TC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            color: #333333;
+            background-color: #fcfcfc;
+        }
+        
+        /* 導覽列：升級為現代感毛玻璃特效 */
+        header {
+            background-color: rgba(123, 123, 123, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #fff;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+        nav a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #18bc9c;
+            transition: width 0.3s ease;
+        }
+        nav a:hover {
+            color: #fff;
+        }
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        /* 區塊與貨櫃間距優化 */
+        section {
+            padding: 120px 20px 60px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.03);
+        }
+        h2 {
+            border-bottom: 2px solid #eaedf1;
+            padding-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.6rem;
+            position: relative;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+        h2:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #18bc9c;
+        }
+        
+        /* 關於我區塊雙欄排版調整 */
+        .about-wrapper {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 40px;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .profile-side {
+            text-align: center;
+        }
+        .profile-pic {
+            width: 100%;
+            max-width: 200px;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .profile-pic:hover {
+            transform: scale(1.03);
+        }
+        @media (max-width: 768px) {
+            .about-wrapper {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 20px;
+            }
+            .profile-pic {
+                max-width: 160px;
+            }
+        }
+        
+        /* 首頁 Banner: 改為高質感深灰漸層 */
+        .hero {
+            text-align: center;
+            padding: 180px 20px 140px 20px;
+            background: linear-gradient(135deg, #232526, #414345);
+            color: white;
+        }
+        .hero h1 { 
+            font-size: 2.8em; 
+            margin-bottom: 15px; 
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        .hero p { 
+            font-size: 1.1em; 
+            color: #bdc3c7; 
+            letter-spacing: 1px;
+        }
+        
+        /* 網格系統 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        /* 卡片樣式精緻化：對齊底部標籤 */
+        .card {
+            background: #ffffff;
+            border: 1px solid #f0f0f0;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.07);
+            border-color: rgba(240,240,240,0.5);
+        }
+        .card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.25rem;
+        }
+        .card p {
+            color: #666;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+        
+        /* Tag 樣式升級為精緻膠囊按鈕 */
+        .tag {
+            display: inline-block;
+            background: #f1f3f5;
+            color: #495057;
+            padding: 4px 12px;
+            font-size: 0.8em;
+            border-radius: 20px;
+            margin-right: 6px;
+            margin-top: 12px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid #e9ecef;
+            font-weight: 500;
+        }
+        .tag:hover {
+            background: #18bc9c;
+            color: #fff;
+            border-color: #18bc9c;
+            transform: translateY(-1px);
+        }
+        
+        /* 精緻時間軸 */
+        .timeline {
+            border-left: 2px solid #e9ecef;
+            padding-left: 30px;
+            margin-left: 15px;
+            position: relative;
+        }
+        .timeline-item {
+            margin-bottom: 35px;
+            position: relative;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 2px solid #18bc9c;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .timeline-item:hover::before {
+            background-color: #18bc9c;
+            transform: scale(1.2);
+        }
+        .timeline-date {
+            font-weight: bold;
+            color: #18bc9c;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        .timeline-item h4 {
+            margin: 5px 0;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        .timeline-item p {
+            margin: 5px 0 0 0;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* 照片牆與作品懸停放大特效 */
+        .photo-gallery {
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .photo-item {
+            background: #f8f9fa; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            aspect-ratio: 4/3;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            cursor: pointer;
+            position: relative;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .photo-item::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.12);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .photo-item img {
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .photo-item:hover {
+            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+            transform: translateY(-4px);
+        }
+        .photo-item:hover img {
+            transform: scale(1.06);
+        }
+        .photo-item:hover::after {
+            opacity: 1;
+        }
+
+        /* 頁尾 */
+        footer {
+            background-color: #4a4a4a;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 80px;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* Modal 彈出視窗放大美化 */
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 15, 15, 0.95);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 75%;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            object-fit: contain;
+        }
+        .modal-caption {
+            color: #fff;
+            font-size: 1.25em;
+            margin-top: 20px;
+            font-weight: 500;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .modal-description {
+            color: #a0aec0;
+            font-size: 0.95em;
+            margin-top: 10px;
+            max-width: 600px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: rgba(255,255,255,0.6);
+            font-size: 45px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: #18bc9c;
+        }
+        
+        /* 錨點跳轉安全間距 */
+        .sub-category-title {
+            scroll-margin-top: 90px;
+        }
+        #activity-photos, #design-photos {
+            scroll-margin-top: 90px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="#home">首頁</a>
+            <a href="#about">關於我</a>
+            <a href="#skills">專業技能</a>
+            <a href="#portfolio">作品總覽</a>
+            <a href="#learning">學習歷程</a>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <h1>反重力檔案室</h1>
+        <p>1111224027吳沐夏的作品集</p>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2>關於我 / About Me</h2>
+            <div class="about-wrapper">
+                <div class="profile-side">
+                    <img src="個人照.jpg" alt="吳沐夏個人照" class="profile-pic" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'padding:50px 10px; background:#f1f2f6; border-radius:50%; width:160px; height:160px; margin:0 auto; display:flex; align-items:center; justify-content:center; border:2px dashed #ccc; color:#777;\'>📷 個人照片</div>';">
+                    
+                    <div class="personal-info-tag" style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center;">
+                        <div style="font-size: 0.95rem; color: #495057; background: #f1f3f5; padding: 4px 16px; border-radius: 20px; border: 1px solid #e9ecef; width: fit-content; font-weight: 500; letter-spacing: 0.5px;">
+                            <P>生日:97年8月22日</P>
+                            <P>星座:✨ 獅子座</P>
+                            <P>血型:A型</P>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-side">
+                    <p style="font-size: 1.1em; color: #2c3e50; font-weight: bold; margin-top: 0;">👋 您好！我是吳沐夏</p>
+                    <p>目前就讀於台中科技大學創意商品設計系。平常喜歡學習團隊領導、活動策劃與跨領域協調能力。喜歡運用文字紀錄生活、用設計解決問題，致力於發掘創意與現實生活結合的無限可能。</p>
+                    <p style="margin-top: 20px; margin-bottom: 5px;"><strong>📋 過往校園經驗</strong></p>
+                    <p style="margin: 4px 0;">• 一年級：擔任畢業迎賓拱門小組組長、基礎設計小老師、體育小老師、一上、一下班級代表。</p>
+                    <p style="margin: 4px 0;">• 二年級：創意商品概論小老師、系學會公關、認親活動主持人、聖誕晚會主持人。</p>
+                    <p style="margin: 4px 0;">• 三年級：現任系學會會長。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="container">
+            <h2>專業技能 / Skills</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>📊 專案管理與活動統籌</h3>
+                    <p>具備大型活動從零到一的推進能力，學習團隊溝通、預算控管與危機處理。</p>
+                </div>
+                <div class="card">
+                    <h3>✍️ 社群行銷與文案創作</h3>
+                    <p>學習經營系學會ig、系上公告文案等文本</p>
+                </div>
+                <div class="card">
+                    <h3>💻基礎設計能力</h3>
+                    <p>基本設計技能(手繪、電繪)、立體作品(木工、金工)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio">
+        <div class="container">
+            <h2>作品總覽 / Portfolio</h2>
+            <div class="grid">
+                <div class="card">
+                    <div>
+                        <h3>👑 2025、2026 年度全校性大型活動</h3>
+                        <p>擔任系學會會長，統籌百人規模活動。負責人員調度、跨團隊溝通與現場執行。</p>
+                        <p style="margin-top: 15px;">
+                            <a href="#activity-photos" style="color: #18bc9c; font-weight: bold; text-decoration: none;">
+                                📸 點擊此處查看活動現場照片
+                            </a>
+                        </p>
+                    </div>
+                    <div>
+                        <span class="tag" style="cursor: default; background: #e2e8f0; color: #4a5568;">#專案管理</span><span class="tag" style="cursor: default; background: #e2e8f0; color: #4a5568;">#領導力</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <h3>📝 文學獎投稿作品 <a href="https://docs.google.com/document/d/1zm-VydOa0D7DiEJyOqN08Dkjcvzfe-sXDnfD36fU6nE/edit?usp=sharing" target="_blank" style="color: #18bc9c; text-decoration: underline; font-size: 0.9em; margin-left: 5px;">[點此線上閱讀]</a></h3>
+                        <p>融合深度思維與細膩情感的文學創作，展現個人對於文字結構、論述與故事敘述的核心能力。</p>
+                    </div>
+                    <div>
+                        <span class="tag" style="cursor: default; background: #e2e8f0; color: #4a5568;">#文案創作</span><span class="tag" style="cursor: default; background: #e2e8f0; color: #4a5568;">#文學創作</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <h3>💻 個人設計作品集</h3>
+                        <p>在品設學習過程中的各種設計相關、實體和數位作業、創作。</p>
+                        <p style="margin-top: 15px;">
+                            <a href="#design-photos" style="color: #18bc9c; font-weight: bold; text-decoration: none;">
+                                🎨 點擊此處觀看作品照片
+                            </a>
+                        </p>
+                    </div>
+                    <div>
+                        <a href="#2d-art" class="tag">#平面作品</a><a href="#3d-art" class="tag">#立體作品</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="activity-photos" style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #eaedf1;">
+                <h4 style="color: #2c3e50; margin-bottom: 25px;">✨ 活動現場精彩剪影 (點擊照片可放大閱讀介紹)</h4>
+                <div class="photo-gallery">
+                    <div class="photo-item" onclick="openModal(this)" data-caption="聖誕晚會主持人" data-desc="在二年級擔任認親、聖誕晚會主持人,了解如何控場、學習應變能力。">
+                        <img src="聖誕晚會主持人.jpg" alt="活動照片1">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="👑學會照(全員)" data-desc="拍攝系學會照片">
+                        <img src="學會照.jpg" alt="活動照片2">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="👑學會照(會長)" data-desc="拍攝系學會照片">
+                        <img src="01.jpg" alt="活動照片3">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="園遊會照" data-desc="以學會名義參與園遊會,販賣商品">
+                        <img src="園遊會照.jpg" alt="活動照片4">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="迎新大合照" data-desc="首次舉辦規模近百人活動,舉辦活動和遊戲凝聚品設向心力,歡迎學弟妹加入品設大家庭。">
+                        <img src="迎新照.jpg" alt="活動照片5">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="👥聖誕晚會全員大合照" data-desc="跨團隊溝通是專案成功的關鍵。圖為活動落幕後與品設、外系同學共同的合影，這段經歷讓我有極大的管理修煉成長。">
+                        <img src="聖誕晚會照.jpg" alt="活動照片6">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="👥聖誕晚會現場活動照" data-desc="圖為活動中拍攝的現場照片,紀錄活動當下。">
+                        <img src="聖誕晚會1.jpg" alt="活動照片7">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="👥園遊會現場活動照" data-desc="記錄一年級園遊會的當下。">
+                        <img src="園遊會1.jpg" alt="活動照片8">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="👥迎新現場活動照" data-desc="大型迎新時拍攝的現場活動照片。">
+                        <img src="迎新1.jpg" alt="活動照片9">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="👥迎新現場活動照2" data-desc="大型迎新時拍攝的現場活動照片。">
+                        <img src="迎新2.jpg" alt="活動照片10">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="👥迎新現場活動照3" data-desc="大型迎新時拍攝的現場活動照片。">
+                        <img src="迎新3.jpg" alt="活動照片11">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="👥新生訓練活動照" data-desc="新生訓練的現場活動紀錄照片。">
+                        <img src="新訓1.jpg" alt="活動照片12">
+                    </div>
+                </div>
+            </div>
+
+            <div id="design-photos" style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #eaedf1;">
+                <h4 style="color: #2c3e50; margin-bottom: 30px;">🎨 個人設計作品展示 (點擊照片可放大)</h4>
+                
+                <h5 id="2d-art" class="sub-category-title" style="color: #7B7B7B; font-size: 1.1em; margin-bottom: 20px; font-weight: 600;">🖼️ 平面作品 (手繪、電繪、平面攝影)</h5>
+                <div class="photo-gallery" style="margin-bottom: 45px;">
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 1" data-desc="在工地附近拍攝攝影作品,呈現末日逆境的感覺。">
+                        <img src="平面1.jpg" alt="平面作品1">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 2" data-desc="呈現家中地下室昏暗的氛圍。">
+                        <img src="平面2.jpg" alt="平面作品2">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 3" data-desc="捕捉教室撒落的光影。">
+                        <img src="平面3.jpg" alt="平面作品3">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 4" data-desc="失焦的夜空,帶有淡淡的粉色。">
+                        <img src="平面4.jpg" alt="平面作品4">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 5" data-desc="層層排列的罐子調成黑白的顏色。">
+                        <img src="平面5.jpg" alt="平面作品5">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 6" data-desc="透過框取的手法來捕捉路人的經過。">
+                        <img src="平面6.jpg" alt="平面作品6">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 7" data-desc="傍晚時的招牌和天空的光芒。">
+                        <img src="平面7.jpg" alt="平面作品7">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 8" data-desc="白天的火車站,嘗試拍出透視的效果。">
+                        <img src="平面8.jpeg" alt="平面作品8">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 9" data-desc="一年級的色彩學作業,利用顏色發想。">
+                        <img src="平面9.jpeg" alt="平面作品9">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 10" data-desc="一年級的基礎設計作業,利用線條去設計名字。">
+                        <img src="平面10.jpg" alt="平面作品10">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 11" data-desc="利用名字去發想設計。">
+                        <img src="平面11.jpg" alt="平面作品11">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 12" data-desc="在此輸入平面作品的設計理念、使用的媒材或軟體。">
+                        <img src="平面12.jpg" alt="平面作品12">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 13" data-desc="一年級時繪製的伊登十二色相環。">
+                        <img src="平面13.jpg" alt="平面作品13">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 14" data-desc="一年級時製作學校裝置藝術(聖誕樹)。">
+                        <img src="平面14.jpg" alt="平面作品14">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 15" data-desc="二年級時繪製的電腦繪圖作業(遙控器)。">
+                        <img src="平面15.jpg" alt="平面作品15">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 16" data-desc="二年級時繪製的電腦繪圖作業(吹風機)。">
+                        <img src="平面16.jpg" alt="平面作品16">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 17" data-desc="二年級時繪製的電腦繪圖作業(水壺)。">
+                        <img src="平面17.jpg" alt="平面作品17">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 18" data-desc="二年級時繪製的電腦繪圖作業(手錶)。">
+                        <img src="平面18.jpg" alt="平面作品18">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 19" data-desc="二年級時繪製的電腦繪圖作業(藍色皮包)。">
+                        <img src="平面19.jpg" alt="平面作品19">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="平面作品 20" data-desc="二年級時繪製的電腦繪圖作業(黃色皮包)。">
+                        <img src="平面20.jpg" alt="平面作品20">
+                    </div>
+                </div>
+
+                <h5 id="3d-art" class="sub-category-title" style="color: #7B7B7B; font-size: 1.1em; margin-bottom: 20px; font-weight: 600;">🔨 立體作品 (工藝、木工、金工)</h5>
+                <div class="photo-gallery">
+                    <div class="photo-item" onclick="openModal(this)" data-caption="立體作品 1" data-desc="在設計工坊做的木製座椅,雖然做的時候很痛苦但成果還不錯,是我很喜歡的一件作品。">
+                        <img src="立體1.jpg" alt="立體作品1">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="立體作品 2" data-desc="設計材料加工的作品海報,呈現我心目中喜歡的燈具。">
+                        <img src="立體2.jpg" alt="立體作品2">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="立體作品3" data-desc="創意商品設計的樹脂作品,透明項鍊跟胸針。">
+                        <img src="立體3.jpg" alt="立體作品3">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="立體作品 4" data-desc="創意商品設計的石塑黏土作品,製作食品罐。">
+                        <img src="立體4.jpg" alt="立體作品4">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="立體作品 5" data-desc="木工的木製作品。">
+                        <img src="立體5.jpg" alt="立體作品5">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="立體作品 6" data-desc="木工的木製作品。">
+                        <img src="立體6.jpg" alt="立體作品6">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="立體作品 7" data-desc="木工的木製作品。">
+                        <img src="立體7.jpg" alt="立體作品7">
+                    </div>
+                    <div class="photo-item" onclick="openModal(this)" data-caption="立體作品 8" data-desc="木工的木製作品。">
+                        <img src="立體8.jpg" alt="立體作品8">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="learning">
+        <div class="container">
+            <h2>學習歷程 / Learning Journey</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2025 - 2026</div>
+                    <h4>數位技能與網頁跨域實踐</h4>
+                    <p>修讀電腦互動課程，從零開始學習網頁架構、Sitemap、CSS排版，將個人經歷數位化。</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024 - 2025</div>
+                    <h4>從幹部到領導者的管理修煉</h4>
+                    <p>接任系學會會長，帶領幹部團隊籌辦多場大型活動，磨練跨團隊溝通、危機處理與抗壓性。</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2023 - 2024</div>
+                    <h4>文字敏閱度的打磨與輸出</h4>
+                    <p>專注於文學創作，透過閱讀與生活觀察累積靈感，並主動挑戰文學獎投稿，跨出公開展示的第一步。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 吳沐夏 反重力檔案室. 版權所有 | 創意商品設計系期末作業</p>
+    </footer>
+
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImg">
+        <div class="modal-caption" id="modalCaption"></div>
+        <div class="modal-description" id="modalDesc"></div>
+    </div>
+
+    <script>
+        function openModal(element) {
+            var modal = document.getElementById("imageModal");
+            modal.style.display = "flex";
+            var imgSrc = element.getElementsByTagName("img")[0].src;
+            var captionText = element.getAttribute("data-caption");
+            var descText = element.getAttribute("data-desc");
+            document.getElementById("modalImg").src = imgSrc;
+            document.getElementById("modalCaption").innerHTML = captionText;
+            document.getElementById("modalDesc").innerHTML = descText;
+        }
+        function closeModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+    </script>
+</body>
+</html>
